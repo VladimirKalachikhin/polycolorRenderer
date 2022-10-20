@@ -1,0 +1,102 @@
+/*
+The Renderer from https://github.com/Oliv/leaflet-polycolor 
+to colorisation of L.Polyline segments
+*/
+
+const polycolorRenderer = L.Canvas.extend({
+_updatePoly: function(layer) {
+	const options = layer.options;
+
+	if (!this._drawing) return;
+
+	let i, j, len2, p, prev;
+	const parts = layer._parts;
+	const len = parts.length;
+	const ctx = this._ctx;
+
+	if (!len) return;
+
+	this._layers[layer._leaflet_id] = layer;
+
+	if (options.stroke && options.weight !== 0) {
+		for (i = 0; i < len; i++) {
+			for (j = 0, len2 = parts[i].length - 1; j < len2; j++) {
+				p = parts[i][j + 1];
+				prev = parts[i][j];
+
+				ctx.beginPath();
+
+				ctx.moveTo(prev.x, prev.y);
+				ctx.lineTo(p.x, p.y);
+
+				this._stroke(ctx, layer, prev, p, j);
+			}
+		}
+	}
+
+	if (options.fill) {
+		ctx.beginPath();
+
+		for (i = 0; i < len; i++) {
+			for (j = 0, len2 = parts[i].length - 1; j < len2; j++) {
+				p = parts[i][j + 1];
+				prev = parts[i][j];
+
+				if (j === 0)
+				ctx.moveTo(prev.x, prev.y);
+				ctx.lineTo(p.x, p.y);
+			}
+		}
+
+		this._fill(ctx, layer, prev, p, j);
+	}
+
+},
+
+_fill: function(ctx, layer, prev, p, j) {
+	const options = layer.options;
+
+	if (options.fill) {
+		ctx.globalAlpha = options.fillOpacity;
+		ctx.fillStyle = options.fillColor || options.color;
+
+		ctx.fill(options.fillRule || 'evenodd');
+	}
+},
+
+_stroke: function(ctx, layer, prev, p, j) {
+	const options = layer.options;
+
+	if (options.stroke && options.weight !== 0) {
+		if (ctx.setLineDash) {
+			ctx.setLineDash(layer.options && layer.options._dashArray || []);
+		}
+
+		ctx.globalAlpha = options.opacity;
+		ctx.lineWidth = options.weight;
+		ctx.strokeStyle = options.useGradient ? this._getStrokeGradient(ctx, layer, prev, p, j) : (options.colors[j] || options.color);
+
+		ctx.lineCap = options.lineCap;
+		ctx.lineJoin = options.lineJoin;
+
+		ctx.stroke();
+
+		ctx.closePath();
+	}
+},
+
+_getStrokeGradient: function(ctx, layer, prev, p, j) {
+	const options = layer.options;
+
+	// Create a gradient for each segment, pick start and end colors from colors options
+	const gradient = ctx.createLinearGradient(prev.x, prev.y, p.x, p.y);
+	const gradientStartRGB = options.colors[j] || options.color;
+	const gradientEndRGB = options.colors[j + 1] || options.color;
+
+	gradient.addColorStop(0, gradientStartRGB);
+	gradient.addColorStop(1, gradientEndRGB);
+
+	return gradient;
+},
+});
+
