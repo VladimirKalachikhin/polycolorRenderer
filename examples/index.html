@@ -21,7 +21,7 @@ var map = L.map('map', {
 });
 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{}).addTo(map);
 
-// Base example. Colored Polyline
+/*// Base example. Colored Polyline
 var latLngs = [
 	[45.187273, 5.758124], 
 	[45.182772, 5.758516], 
@@ -38,7 +38,7 @@ var colors = [
 	'rgb(20, 200, 100)', 
 	'rgb(0, 0, 0)'
 ];
-// Colored MultiPolyline
+*/// Colored MultiPolyline
 var latLngs = [
 	[
 		[45.187273, 5.758124], 
@@ -65,13 +65,24 @@ var colors = [
 		'rgb(0, 0, 0)'
 	]
 ];
+var weights = [	// for each segment, not point
+	[
+		5, 
+		5,
+		null
+	], 
+	[
+		null, 
+		5
+	]
+];
 
 var polyline = L.polyline(latLngs, {
 	renderer: new polycolorRenderer(),
 	colors: colors,
-	color: 'rgba(255, 255, 255, 0.75)',
-	weight: 5,
 	useGradient: true,
+	color: 'rgba(255, 255, 255, 0.75)',
+	weights: weights
 }).addTo(map);
 
 /*// GeoJSON LineString example. The Leaflet creates the Polyline from LineString.
@@ -117,6 +128,16 @@ var colors = [
 		'rgb(0, 0, 0)'
 	]
 ];
+var weights = [	// for each segment, not point
+	[
+		5, 
+		null
+	], 
+	[
+		null, 
+		5
+	]
+];
 
 var geoJSONline = {
 "type": "FeatureCollection",
@@ -148,8 +169,8 @@ var polyline = L.geoJSON(geoJSONline,{
 		return {
 			renderer: new polycolorRenderer(),
 			colors: colors,
-			weight: 5,
 			useGradient: true
+			weights: weights,
 		}
 	}
 }).addTo(map);
@@ -159,7 +180,7 @@ var polyline = L.geoJSON(geoJSONline,{
 
 document.addEventListener('DOMContentLoaded', function() {
 	let fack = document.querySelector('a[href="https://leafletjs.com"]');
-	if(fack.innerHTML.includes('leaflet-attribution-flag'))	fack.innerHTML = '&#128405;' + fack.innerHTML
+	if(fack && fack.innerHTML.includes('leaflet-attribution-flag'))	fack.innerHTML = '&#128405;' + fack.innerHTML
 });
 </script>
 </body>
