@@ -78,6 +78,8 @@ var weights = [	// for each segment, not point
 ];
 
 var polyline = L.polyline(latLngs, {
+	noClip: true,	// this two options disable simplification line by Leaflet
+	smoothFactor: 0,
 	renderer: new polycolorRenderer(),
 	colors: colors,
 	useGradient: true,
@@ -167,6 +169,8 @@ var geoJSONline = {
 var polyline = L.geoJSON(geoJSONline,{
 	style: function(feature){
 		return {
+			noClip: true,	// this two options disable simplification line by Leaflet
+			smoothFactor: 0,
 			renderer: new polycolorRenderer(),
 			colors: colors,
 			useGradient: true

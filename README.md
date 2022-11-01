@@ -22,6 +22,8 @@ As the renderer has a narrow purpose, only the following options of L.Polyline a
 ### Polyline
 ```
 let polyline = L.polyline(latLngs, {
+	noClip: true,
+	smoothFactor: 0,
 	renderer: new polycolorRenderer(),
 	colors: [......], // array of html colors
 	useGradient: false,
@@ -35,6 +37,8 @@ It makes no sense to use the renderer for coloring GeoJSON LineString to solid c
 var polyline = L.geoJSON(geoJSONdata,{
 	style: function(feature){
 		return {
+			noClip: true,
+			smoothFactor: 0,
 			renderer: new polycolorRenderer(),
 			colors: [......], // array of html colors
 			weights: [......] // array of segment's width
@@ -55,15 +59,24 @@ const colors = [
 ```
 The same for `weights` array.
 
+#### Suppression of Leaflet's line optimization
+The next two L.Polyline options suppress simplification and smoothing of the line created by Leaflet:
+```
+noClip: true,
+smoothFactor: 0,
+```
+As a result, all segments defined when creating a polyline will be present in the resulting line, and they can be colored correctly. But this will require resources and will work slower.
+
 ### Options
 
-- `colors` \<Array>: An array of html colors strings `rgb(x,y,z), rgba(x,y,z,t)`or '#3388ff', or array of arrays of colors. Any of these arrays can be empty.
+- `colors` \<Array>: An array of html colors strings `rgb(x,y,z), rgba(x,y,z,t)`or #3388ff, or array of arrays of colors. Any of these arrays can be empty.
 - `useGradient` \<Boolean>: Use or not gradient to smooth colors. Defaults to `true. `
 - `weights` \<Array>: An array of segments stroke width in pixels. The number of values of this array is equal to the number of segments, that is a number of colors - 1.
 
-If `colors`or weight are `undefined`, the default `color`or weight parameter is used.
+If `colors` or weight are `undefined`, the default `color`or weight parameter is used.
 To leave default value, use `null` in array:  
 `['rgb(0, 0, 0)', null, 'rgb(0, 45, 120)']`  
+An empty array has the same as `null`: applying the default value.  
 No gradient is made between the default and the specified values.
 
 ## Demo
