@@ -2,7 +2,8 @@
 ## v. 0.2
 The Leaflet L.Renderer upon the idea [leaflet-polycolor](https://github.com/Oliv/leaflet-polycolor) project.  
 
-Suitable for color-coding a Leaflet polyline based on additional values, e.g. altitude, speed, depth, etc... Main goal is a gradient color of segments to represent continuous values.  
+Suitable for color-coding a Leaflet polyline based on additional values, e.g. altitude, speed, depth, etc... Main goal the renderer is a gradient color of segments to represent continuous values.  
+ The color code maybe created by [value2color](https://github.com/VladimirKalachikhin/value2color) function.  
 Additionally, it is possible to set the `weight` option of each L.Polyline segment.
 
 It can be used both for L.Polyline and L.GeoJSON LineString features.
