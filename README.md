@@ -66,7 +66,20 @@ The next two L.Polyline options suppress simplification and smoothing of the lin
 noClip: true,
 smoothFactor: 0,
 ```
-As a result, all segments defined when creating a polyline will be present in the resulting line, and they can be colored correctly. But this will require resources and will work slower.
+As a result, all segments defined when creating a polyline will be present in the resulting line, and they can be colored correctly. BUT! The empty GeoJSON MultiLineString segments, such as:  
+
+```
+geometry: { type: "MultiLineString", 					coordinates: Array [ 
+		[],
+		[…]
+	]
+}
+```
+
+will be ignored by the Leaflet regardless of any options. The procedure for creating of `colors` array should take this into account.
+
+#### Efficiency
+Using the renderer requires resources and will work slower. In addition, the Leaflet calls the renderer every time the map is moved. For dynamic applications, this can result in a heavy load.
 
 ### Options
 
