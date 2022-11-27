@@ -78,7 +78,7 @@ _updatePoly: function(layer) {
 
 			// Зададим толщину
 			if(optWeights){
-				console.log(i,j,optWeights[i][j]);
+				//console.log(i,j,optWeights[i][j]);
 				if(optWeights[i].length == 0) ctx.lineWidth = layer.options.weight;	// пустой массив, задаём толщину линнии по умолчанию (layer.options.weight всегда есть?)
 				else if(optWeights[i].length < j) ctx.lineWidth = optWeights[i][0] || layer.options.weight;	// одно значение на все сегменты или неверное число значений
 				else ctx.lineWidth = optWeights[i][j] || layer.options.weight;
