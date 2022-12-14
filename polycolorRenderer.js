@@ -1,5 +1,5 @@
 /* Vladimir Kalachikhin v.kalachikhin@gmail.com CC BY-SA
-version 0.2.0
+version 0.2.1
 The Renderer upon the idea https://github.com/Oliv/leaflet-polycolor 
 to colorisation of L.Polyline segments
 Only the following options are supported:
@@ -69,7 +69,7 @@ _updatePoly: function(layer) {
 						if(optColors[i][j] && optColors[i][j+1]) {	// рисуем градиент только если есть содержательные значения
 							ctx.strokeStyle = this._getStrokeGradient(ctx, prevPoint, Point, optColors[i][j], optColors[i][j+1]);
 						}
-						else ctx.strokeStyle = layer.options.color;	// не рисуем градиент к умолчальному значению
+						else ctx.strokeStyle = optColors[i][j] || layer.options.color;	// не рисуем градиент к умолчальному значению, но рисуем цвет, если есть
 					}
 					else ctx.strokeStyle = optColors[i][j] || layer.options.color;
 				}
