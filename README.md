@@ -59,7 +59,7 @@ const colors = [
 ```
 The same for `weights` array.
 
-#### Suppression of Leaflet's line optimization
+### Suppression of Leaflet's line optimization
 The next two L.Polyline options suppress simplification and smoothing of the line created by Leaflet:
 ```
 noClip: true,
@@ -68,7 +68,8 @@ smoothFactor: 0,
 As a result, all segments defined when creating a polyline will be present in the resulting line, and they can be colored correctly. BUT! The empty GeoJSON MultiLineString segments, such as:  
 
 ```
-geometry: { type: "MultiLineString", 					coordinates: Array [ 
+geometry: { type: "MultiLineString",
+	coordinates: Array [ 
 		[],
 		[…]
 	]
@@ -76,9 +77,6 @@ geometry: { type: "MultiLineString", 					coordinates: Array [
 ```
 
 will be ignored by the Leaflet regardless of any options. The procedure for creating of `colors` array should take this into account.
-
-#### Efficiency
-Using the renderer requires resources and will work slower. In addition, the Leaflet calls the renderer every time the map is moved. For dynamic applications, this can result in a heavy load.
 
 ### Options
 
@@ -91,6 +89,9 @@ To leave default value, use `null` in array:
 `['rgb(0, 0, 0)', null, 'rgb(0, 45, 120)']`  
 An empty array has the same as `null`: applying the default value.  
 No gradient is made between the default and the specified values.
+
+## Efficiency
+Using the renderer requires resources and will work slower. In addition, the Leaflet calls the renderer every time the map is moved. For dynamic applications, this can result in a heavy load.
 
 ## Demo
 The _examples_ directory has a complete example of using the polycolorRenderer with GeoJSON data.
